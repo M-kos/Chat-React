@@ -12,6 +12,13 @@ app.get("/", function(req, res) {
 
 io.on('connection', function (socket) {
 
+    socket.emit('getId', {id: socket.id});
+
+    socket.on('enter_the_room', (obj) => {
+        socket.join(obj.id);
+        console.log('User join room: ', obj.id);
+    });
+
     console.log('User connect');
 
     socket.on('disconnect', function (data) {
