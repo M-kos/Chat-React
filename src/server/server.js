@@ -29,6 +29,18 @@ io.on('connection', function (socket) {
     console.log('User connect');
 
     socket.on('disconnect', function (data) {
+        let user = users.find(el => el.userId == socket.id);
+        let userIndex = users.indexOf(user);
+        let newUserList = [...users.slice(0, userIndex), ...users.slice(userIndex + 1)];
+
+        users = [...newUserList];
+
+        if(userIndex > 0) {
+            io.to(user.idRoom).emit('updateUserList', users.filter((el) => {
+                return el.idRoom == user.idRoom;
+            }));
+        }
+        
         console.log('User disconnect');
     });
 });
