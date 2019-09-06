@@ -15,7 +15,6 @@ export default class MessageInput {
         e.preventDefault();
 
         if(value.trim().length == 0) {
-            alert("Enter your name!");
             return;
         } else {
             this.props.onMessage(value);
