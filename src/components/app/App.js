@@ -83,7 +83,7 @@ export default class App extends Component {
     const {idRoom, islogin, currentUsers, currentMessages} = this.state;
     
     return (
-      <React.Fragment>
+      <div className="wrapper">
         {
           islogin ? (
             <div>
@@ -95,7 +95,7 @@ export default class App extends Component {
             <Login onLogin={this.onLogin}/>
           )
         }
-      </React.Fragment>
+      </div>
     );
   };
 }
