@@ -81,32 +81,15 @@ export default class App extends Component {
 
   render() {
     const {idRoom, islogin, currentUsers, currentMessages} = this.state;
-
-    let rend;
-
-    if(this.idFromUrl.length == 0) {
-      rend = (
-        <div>
-          <Redirect to={`/${idRoom}`} />
-          <ChatRoom currentUsers={currentUsers} currentMessages={currentMessages}/>
-          <MessageInput onMessage={this.onMessage}/>
-        </div>
-      );
-    } else {
-      rend = (
-        <div>
-          <ChatRoom currentUsers={currentUsers} currentMessages={currentMessages}/>
-          <MessageInput onMessage={this.onMessage}/>
-        </div>
-      );
-    }
     
     return (
       <React.Fragment>
         {
           islogin ? (
             <div>
-              {rend}
+              {(this.idFromUrl.length == 0) ? <Redirect to={`/${idRoom}`} /> : null}
+              <ChatRoom currentUsers={currentUsers} currentMessages={currentMessages}/>
+              <MessageInput onMessage={this.onMessage}/>
             </div>
           ) : (
             <Login onLogin={this.onLogin}/>
