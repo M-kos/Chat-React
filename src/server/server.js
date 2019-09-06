@@ -6,7 +6,8 @@ const path = require('path');
 
 const port = 8080;
 
-let users = [];
+let usersAll = [];
+let usersOnline = [];
 let messages = [];
 
 app.get("/", function(req, res) {
@@ -20,33 +21,34 @@ io.on('connection', function (socket) {
         console.log('User join room: ', obj.id);
     });
 
+    //создаем нового пользователя, добавлеям в массивы всех пользователей и пользователей онлайн, уведомляем пользователей  комнате
     socket.on('new_user', (obj) => {
-        users.push(obj);
-        io.to(obj.idRoom).emit('updateUserList', users.filter((el) => {
-            return el.idRoom == obj.idRoom;
-        }));
-    }); 'new_message'
+        usersAll.push(obj);
+        usersOnline.push(obj);
 
+        io.to(obj.idRoom).emit('updateUserList', idRoomFilter(usersOnline, obj));
+
+        io.to(obj.idRoom).emit('getMessagesList', idRoomFilter(messages, obj));
+    });
+
+    //создаем новое сообщение и уведомляем всех пользователей в комнате
     socket.on('new_message', (obj) => {
-        messages.push(obj);
-        io.to(obj.idRoom).emit('updateMessagesList', messages.filter((el) => {
-            return el.idRoom == obj.idRoom;
-        }));
+        messages.push(createMessage(obj));
+        io.to(obj.idRoom).emit('updateMessagesList', idRoomFilter(messages, obj));
     });
 
     console.log('User connect');
 
     socket.on('disconnect', function (data) {
-        let user = users.find(el => el.userId == socket.id);
-        let userIndex = users.indexOf(user);
-        let newUserList = [...users.slice(0, userIndex), ...users.slice(userIndex + 1)];
+        //удаляем вышедшего юзера и передаем клиентам обновленный список онлайн юзеров
+        let user = usersOnline.find(el => el.userId == socket.id);
+        let userIndex = usersOnline.indexOf(user);
+        let newUserList = [...usersOnline.slice(0, userIndex), ...usersOnline.slice(userIndex + 1)];
 
-        users = [...newUserList];
+        usersOnline = [...newUserList];
 
         if(userIndex > 0) {
-            io.to(user.idRoom).emit('updateUserList', users.filter((el) => {
-                return el.idRoom == user.idRoom;
-            }));
+            io.to(user.idRoom).emit('updateUserList', idRoomFilter(usersOnline, user));
         }
 
         console.log('User disconnect');
@@ -56,3 +58,23 @@ io.on('connection', function (socket) {
 server.listen(port, function () {
     console.log('app running on port ' + port);
 })
+
+
+//Создает элемент массива messages
+function createMessage(obj) {
+    let user = usersAll.find(el => el.userId == obj.userId)
+
+    return {
+        message: obj.message,
+        idRoom: obj.idRoom,
+        userName: user.name,
+        time: obj.time
+    }
+}
+//фильтрует данный массив и возращает ноый массив, где свойство idRoom совпадает с аналогичным свойством из передаваемого объекта
+function idRoomFilter(arr, obj) {
+    let newArr = arr.filter((el) => {
+        return el.idRoom == obj.idRoom;
+    });
+    return newArr;
+}
