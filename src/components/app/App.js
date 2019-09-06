@@ -50,12 +50,9 @@ export default class App extends Component {
       });
     });
 
-    socket.on('updateMessagesList', (messages) => {
-      let newMessagesList = [...messages];
-      this.setState({
-        currentMessages: newMessagesList
-      });
-    });
+    socket.on('updateMessagesList', (messages) => this.updateMessageList(messages));
+
+    socket.on('getMessagesList', (messages) => this.updateMessageList(messages));
     
     socket.on('disconnect', () => {
       console.log('disconnected from socket');
@@ -75,8 +72,15 @@ export default class App extends Component {
     socket.emit('new_message', {message: value, idRoom: this.state.idRoom, userId: socket.id, time: Date.now()})
   }
 
+  updateMessageList = (messages) => {
+    let newMessagesList = [...messages];
+    this.setState({
+      currentMessages: newMessagesList
+    });
+  }
+
   render() {
-    const {idRoom, islogin, currentUsers} = this.state;
+    const {idRoom, islogin, currentUsers, currentMessages} = this.state;
 
     let rend;
 
@@ -84,14 +88,14 @@ export default class App extends Component {
       rend = (
         <div>
           <Redirect to={`/${idRoom}`} />
-          <ChatRoom currentUsers={currentUsers}/>
+          <ChatRoom currentUsers={currentUsers} currentMessages={currentMessages}/>
           <MessageInput onMessage={this.onMessage}/>
         </div>
       );
     } else {
       rend = (
         <div>
-          <ChatRoom currentUsers={currentUsers}/>
+          <ChatRoom currentUsers={currentUsers} currentMessages={currentMessages}/>
           <MessageInput onMessage={this.onMessage}/>
         </div>
       );
