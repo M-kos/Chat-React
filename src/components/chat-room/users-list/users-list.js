@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 
 import User from './user/user';
 
+import './users-list.css';
+
 export default class UserList extends Component {
     
     render() {
@@ -10,8 +12,8 @@ export default class UserList extends Component {
         let usersList = userList.map(el => <User key={el.id} userName={el.name} />);
 
         return (
-            <div>
-                <ul>
+            <div className="user-list">
+                <ul className="user-list-ul">
                     {usersList}
                 </ul>
             </div>

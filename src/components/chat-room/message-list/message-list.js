@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 
 import Message from './message/message';
 
+import './message-list.css';
+
 export default class MessageList extends Component {
     
     render() {
@@ -10,8 +12,8 @@ export default class MessageList extends Component {
         let messageList = messagesList.map((el, i) => <Message key={i} userName={el.userName} time={el.time} message={el.message}/>);
 
         return (
-            <div>
-                <ul>
+            <div className="message-list">
+                <ul className="message-list-ul">
                     {messageList}
                 </ul>
             </div>

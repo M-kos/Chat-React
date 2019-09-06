@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+import './message-input.css';
+
 export default class MessageInput extends Component {
     state = {
         textAreaValue: ''
@@ -28,15 +30,16 @@ export default class MessageInput extends Component {
         const {textAreaValue} = this.state;
 
         return (
-            <div>
-                <form onSubmit={(e) => {this.validationMessage(e, textAreaValue)}}>
-                    <label>Input your message:</label>
+            <div className="message-input">
+                <form className="message-form" onSubmit={(e) => {this.validationMessage(e, textAreaValue)}}>
+                    <label className="message-label">Input your message:</label>
                     <textarea 
+                        className="message-textarea"
                         placeholder="Your message"
                         value={textAreaValue}
                         onChange={this.updateTextAreaValue}>
                     </textarea>
-                    <button>
+                    <button className="message-btn">
                         Send
                     </button>
                 </form>

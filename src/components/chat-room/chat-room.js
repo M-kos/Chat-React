@@ -3,6 +3,8 @@ import React, {Component} from 'react';
 import UserList from './users-list/users-list';
 import MessageList from './message-list/message-list';
 
+import './chat-room.css';
+
 export default class App extends Component {
     render() {
 
@@ -20,7 +22,7 @@ export default class App extends Component {
         });
 
         return (
-            <div>
+            <div className="chat-room">
                 <MessageList messagesList={messagesList}/>
                 <UserList userList={currentUsers.map((el) => {
                     return {id: el.userId, name: el.name}

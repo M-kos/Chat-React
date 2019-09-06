@@ -1,0 +1,10 @@
+.message-list{
+    width: 80%;
+    overflow-y: scroll;
+}
+
+.message-list-ul {
+    width: 100%;
+    list-style: none;
+    padding: 20px;
+}

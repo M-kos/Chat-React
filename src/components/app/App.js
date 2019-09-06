@@ -72,6 +72,7 @@ export default class App extends Component {
     socket.emit('new_message', {message: value, idRoom: this.state.idRoom, userId: socket.id, time: Date.now()})
   }
 
+  //Добавляет обновленный список сообщений в state
   updateMessageList = (messages) => {
     let newMessagesList = [...messages];
     this.setState({
@@ -86,7 +87,7 @@ export default class App extends Component {
       <div className="wrapper">
         {
           islogin ? (
-            <div>
+            <div className="chat-room-container">
               {(this.idFromUrl.length == 0) ? <Redirect to={`/${idRoom}`} /> : null}
               <ChatRoom currentUsers={currentUsers} currentMessages={currentMessages}/>
               <MessageInput onMessage={this.onMessage}/>
