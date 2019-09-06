@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {Component} from 'react';
 
-export default class MessageInput {
+export default class MessageInput extends Component {
     state = {
         textAreaValue: ''
     }
@@ -18,6 +18,9 @@ export default class MessageInput {
             return;
         } else {
             this.props.onMessage(value);
+            this.setState({
+                textAreaValue: ''
+            });
         }
     };
 
