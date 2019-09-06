@@ -59,6 +59,7 @@ export default class App extends Component {
     });
   }
 
+  //Отправляет введенное имя на сервер
   onLogin = (value) => {
 
     socket.emit('new_user', {name: value, idRoom: this.state.idRoom, userId: socket.id})
@@ -68,6 +69,7 @@ export default class App extends Component {
     });
   };
 
+  //Отправляет введенное сообщение на сервер
   onMessage = (value) => {
     socket.emit('new_message', {message: value, idRoom: this.state.idRoom, userId: socket.id, time: Date.now()})
   }

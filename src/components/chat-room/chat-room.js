@@ -10,7 +10,7 @@ export default class App extends Component {
 
         const {currentUsers, currentMessages} = this.props;
         
-
+        //Присваиваем в переменную массив сообщений с датой представленной строкой в читаемом формате
         let messagesList = currentMessages.map((el) => {
             let time = new Date(el.time).toString().substr(0, 24);
 

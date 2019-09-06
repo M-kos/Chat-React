@@ -7,12 +7,14 @@ export default class MessageInput extends Component {
         textAreaValue: ''
     }
 
+    //Обновление state при вводе текста
     updateTextAreaValue = (e) => {
         this.setState({
             textAreaValue: e.target.value
         });
     };
 
+    //Предотвращаем отправку пустого сообщения
     validationMessage = (e, value) => {
         e.preventDefault();
 
