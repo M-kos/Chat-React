@@ -6,17 +6,21 @@ const path = require('path');
 
 const port = 8080;
 
+let users = [];
+
 app.get("/", function(req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 io.on('connection', function (socket) {
 
-    socket.emit('getId', {id: socket.id});
-
     socket.on('enter_the_room', (obj) => {
         socket.join(obj.id);
         console.log('User join room: ', obj.id);
+    });
+
+    socket.on('new_user', (obj) => {
+        users.push(obj);
     });
 
     console.log('User connect');
