@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+import './login.css';
+
 export default class Login extends Component {
 
     state = {
@@ -27,15 +29,16 @@ export default class Login extends Component {
         const {inputValue} = this.state;
 
         return (
-            <div>
-                <form onSubmit={(e) => {this.validationName(e, inputValue)}}>
-                    <label>Input your name:</label>
+            <div className="login">
+                <form className="login-form" onSubmit={(e) => {this.validationName(e, inputValue)}}>
+                    <label className="login-label">Enter your name:</label>
                     <input 
+                        className="login-input"
                         type="text"
                         placeholder="Your name"
                         value={inputValue}
                         onChange={this.updateInputValue}/>
-                    <button>
+                    <button className="login-btn">
                         Ok
                     </button>
                 </form>
