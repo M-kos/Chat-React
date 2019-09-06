@@ -4,6 +4,7 @@ import {Redirect} from 'react-router-dom';
 
 import Login from '../login/login';
 import ChatRoom from '../chat-room/chat-room';
+import MessageInput from '../message-input/message-input';
 
 import './App.css';
 
@@ -21,7 +22,8 @@ export default class App extends Component {
   state = {
     idRoom: '',
     isLogin: false,
-    currentUsers: []
+    currentUsers: [],
+    currentMessages: []
   }
 
   componentDidMount() {
@@ -42,10 +44,17 @@ export default class App extends Component {
     });
 
     socket.on('updateUserList', (users) => {
-      let newUsersList = [...users]
+      let newUsersList = [...users];
       this.setState({
         currentUsers: newUsersList
-      })
+      });
+    });
+
+    socket.on('updateMessagesList', (messages) => {
+      let newMessagesList = [...messages];
+      this.setState({
+        currentMessages: newMessagesList
+      });
     });
     
     socket.on('disconnect', () => {
@@ -62,6 +71,10 @@ export default class App extends Component {
     });
   };
 
+  onMessage = (value) => {
+    socket.emit('new_message', {message: value, idRoom: this.state.idRoom, userId: socket.id, time: Date.now()})
+  }
+
   render() {
     const {idRoom, islogin, currentUsers} = this.state;
 
@@ -72,12 +85,14 @@ export default class App extends Component {
         <div>
           <Redirect to={`/${idRoom}`} />
           <ChatRoom currentUsers={currentUsers}/>
+          <MessageInput onMessage={this.onMessage}/>
         </div>
       );
     } else {
       rend = (
         <div>
           <ChatRoom currentUsers={currentUsers}/>
+          <MessageInput onMessage={this.onMessage}/>
         </div>
       );
     }

@@ -7,6 +7,7 @@ const path = require('path');
 const port = 8080;
 
 let users = [];
+let messages = [];
 
 app.get("/", function(req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
@@ -22,6 +23,13 @@ io.on('connection', function (socket) {
     socket.on('new_user', (obj) => {
         users.push(obj);
         io.to(obj.idRoom).emit('updateUserList', users.filter((el) => {
+            return el.idRoom == obj.idRoom;
+        }));
+    }); 'new_message'
+
+    socket.on('new_message', (obj) => {
+        messages.push(obj);
+        io.to(obj.idRoom).emit('updateMessagesList', messages.filter((el) => {
             return el.idRoom == obj.idRoom;
         }));
     });
@@ -40,7 +48,7 @@ io.on('connection', function (socket) {
                 return el.idRoom == user.idRoom;
             }));
         }
-        
+
         console.log('User disconnect');
     });
 });
