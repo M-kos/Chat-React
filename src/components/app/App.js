@@ -55,7 +55,7 @@ export default class App extends Component {
 
   onLogin = (value) => {
 
-    socket.emit('new_user', {name: value, id: this.state.idRoom})
+    socket.emit('new_user', {name: value, idRoom: this.state.idRoom, userId: socket.id})
 
     this.setState({
       islogin: true

@@ -21,17 +21,10 @@ io.on('connection', function (socket) {
 
     socket.on('new_user', (obj) => {
         users.push(obj);
-        io.to(obj.id).emit('updateUserList', users.filter((el) => {
-            return el.id == obj.id;
+        io.to(obj.idRoom).emit('updateUserList', users.filter((el) => {
+            return el.idRoom == obj.idRoom;
         }));
     });
-
-    socket.on('get_users', (id) => {
-        let currentUsers = users.filter((el) => {
-            return el.id == id;
-        });
-        socket.emit('send_users', currentUsers)
-    })
 
     console.log('User connect');
 
