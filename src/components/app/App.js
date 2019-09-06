@@ -3,6 +3,7 @@ import openSocket from 'socket.io-client';
 import {Redirect} from 'react-router-dom';
 
 import Login from '../login/login';
+import ChatRoom from '../chat-room/chat-room';
 
 import './App.css';
 
@@ -19,7 +20,8 @@ export default class App extends Component {
 
   state = {
     idRoom: '',
-    isLogin: false
+    isLogin: false,
+    currentUsers: []
   }
 
   componentDidMount() {
@@ -38,6 +40,13 @@ export default class App extends Component {
         socket.emit('enter_the_room', {id: this.idFromUrl})
       }
     });
+
+    socket.on('updateUserList', (users) => {
+      let newUsersList = [...users]
+      this.setState({
+        currentUsers: newUsersList
+      })
+    });
     
     socket.on('disconnect', () => {
       console.log('disconnected from socket');
@@ -54,21 +63,21 @@ export default class App extends Component {
   };
 
   render() {
-    const {idRoom, islogin} = this.state;
+    const {idRoom, islogin, currentUsers} = this.state;
 
     let rend;
 
-    if(idRoom.length != 0) {
+    if(this.idFromUrl.length == 0) {
       rend = (
         <div>
           <Redirect to={`/${idRoom}`} />
-          <h1>Hello</h1>
+          <ChatRoom currentUsers={currentUsers}/>
         </div>
       );
     } else {
       rend = (
         <div>
-          <h1>Hello 2</h1>
+          <ChatRoom currentUsers={currentUsers}/>
         </div>
       );
     }
