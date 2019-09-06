@@ -8,12 +8,14 @@ export default class Login extends Component {
         inputValue: ''
     }
 
+    //Обновление state при вводе текста
     updateInputValue = (e) => {
         this.setState({
             inputValue: e.target.value
         });
     };
 
+    //небольшая валидация, если имя не введено появлется алерт
     validationName = (e,value) => {
         e.preventDefault();
 
